@@ -42,7 +42,7 @@ module RoutePlanner
           session[:watching] = resourcelist.map(&:original_id)
           viewable_resource = Views::RoadmapsList.new(resourcelist)
         end
-        view 'home', locals: { roadmaps: viewable_resource }
+        view 'home_old', locals: { roadmaps: viewable_resource }
       end
       routing.on 'search' do
         routing.is do

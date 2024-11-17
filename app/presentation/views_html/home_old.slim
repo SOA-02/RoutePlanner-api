@@ -5,14 +5,18 @@
       p.lead Your gateway to the universe of knowledge
 
   / Corrected form structure to contain input and button elements
-  form role="form" action="/search" method="POST" id="pdf-upload-form"
-    .row.d-flex.justify-content-center.align-items-center
+  form role="form" action="/search" method="POST" id="show-project-form"
+    .row.d-flex.justify-content-center.align-items-center.query-bar
       .col-md-1.col-sm-2.text-light
-        .text-md-end Select file (only PDF):
+        .text-md-end Search:
       .col-md-8.col-sm-6
-        input.form-control#pdfUpload type="file" name="pdfFile" accept=".pdf" 
+        input.form-control#search_key_word type="text" name="search_key_word" placeholder="e.g. Ruby tutorial" list="datalistOptions"
+        datalist#datalistOptions
+          option value="Ruby"
+          option value="PHP"
+      
       .col-md-2.col-sm-3
-        button.btn.btn-primary#pdf-upload-submit type="submit" upload
+        button.btn.btn-success#repo-form-submit type="submit" Show Info
 
 .container
   section
