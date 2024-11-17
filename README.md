@@ -1,47 +1,19 @@
-# LFM - TitleTOC
-application that allows users to transfer the **title of videos in a playlist** to markdown language of **Table of Content(TOC)**.
+# LFM - RoutePlanner
+To provide students with actionable insights based on their syllabus, helping them identify gaps and access relevant resources.
 
-## Objectives
-### short term
-* create **TOC** 
-* recommend related learning resources on **YouTube**
+## Process:
 
-### long term 
-* add title of timestamp 
-* recommend other online learning resources summarized by ChatGPT 
 
-## User Scenario
-### Gherkin
-```gherkin=
-Feature: List of Table of Content
-  As a eager student
-  I want to have a table of content from Gate Smasher 
-  Because I want to take notes faster
+1. Upload Syllabus: Students upload their syllabus document.
+2. AI Analysis: ChatGPT analyzes the syllabus to identify key concepts, prerequisites, and potential areas of improvement.
+3. Resource Suggestion:
+    - NTHU On-Campus Courses: Matches are suggested for official NTHU courses.
+    - YouTube Lectures: For topics not covered by official courses, suggest high-quality online resources (e.g., GitHub tutorials).
 
-  Scenario: User opens up YouTube & Note-taking app 
-    Given I'm a logged-in YouTube User
-    When I open up the web page
-    And I click "Transfer to TOC"
-    Then the TOC should be generated 
-    And H1: # Title of Playlist
-    And H2: ## Title of each video
-```
+
 ## ERD
-![image](https://raw.githubusercontent.com/SOA-02/YoutubeAPITest/refs/heads/MING-CHUNLee-ERM-1/SOA-ER%20Model.drawio.png)
 
 
-## Resource
-### YouTube API 
-* **Entities:**
-    * Channel
-    * Playlist
-    * Video
-
-* **Elements**
-    * Title
-    * id
-    * Thumbnail URL
-    * description
 
 ## Setup
 * Create a personal YouTube Token with ```public_repo``` scope
