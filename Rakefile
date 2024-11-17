@@ -69,7 +69,7 @@ namespace :db do
     require_relative 'config/environment' # load config info
     require_relative 'spec/helpers/database_helper'
 
-    def app = Outline::App # rubocop:disable Rake/MethodDefinitionInTask
+    def app = RoutePlanner::App # rubocop:disable Rake/MethodDefinitionInTask
   end
 
   desc 'Run migration'
@@ -97,8 +97,8 @@ namespace :db do
       return
     end
 
-    FileUtils.rm(Outline::App.config.DB_FILENAME)
-    puts "Deleted #{Outline::App.config.DB_FILENAME}"
+    FileUtils.rm(RoutePlanner::App.config.DB_FILENAME)
+    puts "Deleted #{RoutePlanner::App.config.DB_FILENAME}"
   end
 end
 

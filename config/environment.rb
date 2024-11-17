@@ -6,7 +6,7 @@ require 'roda'
 require 'sequel'
 require 'yaml'
 
-module Outline
+module RoutePlanner
   # Configuration for the App
   class App < Roda
     plugin :environments

@@ -40,7 +40,7 @@
 .editormd .editormd-markdown-textarea {
   width: 0;
   height: 0;
-  outline: 0;
+  RoutePlanner: 0;
   resize: none;
 }
 .editormd .editormd-html-textarea,
@@ -135,7 +135,7 @@
   border-right: 1px solid #ddd;
 }
 .editormd-menu > li > a {
-  outline: 0;
+  RoutePlanner: 0;
   color: #666;
   display: inline-block;
   min-width: 24px;
@@ -547,7 +547,7 @@
   display: none;
 }
 .editormd-form input:focus {
-  outline: 0;
+  RoutePlanner: 0;
 }
 .editormd-form input[type="text"], .editormd-form input[type="number"] {
   color: #999;
@@ -711,7 +711,7 @@
   background-repeat: repeat-x;
 }
 .editormd .CodeMirror-empty.CodeMirror-focused {
-  outline: none;
+  RoutePlanner: none;
 }
 .editormd .CodeMirror pre.CodeMirror-placeholder {
   color: #999;
@@ -3186,7 +3186,7 @@
 
 .markdown-body a:active,
 .markdown-body a:hover {
-  outline: 0;
+  RoutePlanner: 0;
 }
 
 .markdown-body strong {
@@ -3397,7 +3397,7 @@
 }
 
 .markdown-body .anchor:focus {
-  outline: none;
+  RoutePlanner: none;
 }
 
 .markdown-body h1,

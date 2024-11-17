@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-module Outline
+module RoutePlanner
   module Youtube
-    # Video mapper: Youtube repo -> Video entity
     class VideoMapper
       def initialize(yt_key, gateway_class = YoutubeApi)
         @api_key = yt_key
@@ -30,7 +29,7 @@ module Outline
           # puts "value being passed to Video.new: #{value.inspect}"
           # "value class: #{value.class}"
 
-          Outline::Entity::Video.new(
+          RoutePlanner::Entity::Video.new(
             id: nil,
             video_id:,
             video_title:,

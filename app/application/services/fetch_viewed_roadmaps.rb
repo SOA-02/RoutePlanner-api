@@ -2,16 +2,16 @@
 
 require 'dry/monads'
 
-module Outline
+module RoutePlanner
   module Service
-    # logic of fetching viewed videos
-    class FetchViewedVideos
+    # logic of fetching viewed resources
+    class FetchViewedRoadmap
       include Dry::Monads::Result::Mixin
 
-      def call(videos_list)
-        videos = Repository::For.klass(Entity::Video).find_all_video(videos_list)
+      def call(resource_list)
+        resources = Repository::For.klass(Entity::Online).all
 
-        Success(videos)
+        Success(resources)
       rescue StandardError
         Failure(MSG_SERVER_ERROR)
         puts 'Could not access database'

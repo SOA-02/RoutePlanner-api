@@ -5,4 +5,4 @@
 require_relative 'require_app'
 require_app
 
-def app = Outline::App
+def app = RoutePlanner::App

@@ -2,7 +2,7 @@
 
 require 'dry-validation'
 
-module Outline
+module RoutePlanner
   module Forms
     # Validation for new search form
     class NewSearch < Dry::Validation::Contract

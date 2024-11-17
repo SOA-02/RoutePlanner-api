@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module Outline
+module RoutePlanner
   module Youtube
-    class SearchRelevantMapper # rubocop:disable Style/Documentation
+    class VideoRecommandMapper # rubocop:disable Style/Documentation
       def initialize(api_key, gateway_class = YoutubeApi)
         @api_key = api_key
         @gateway_class = gateway_class
@@ -48,36 +48,31 @@ module Outline
         end
 
         def build_entity
-          Entity::SearchRelevant.new(
+          Entity::Online.new(
             id: nil,
-            video_id:,
-            channel_id:,
-            title:,
-            description:,
-            default_thumbnail_url:
+            original_id:,
+            topic:,
+            url:,
+            platform:
           )
         end
 
         private
 
-        def video_id
+        def original_id
           @data['id']['videoId']
         end
 
-        def channel_id
-          @data['snippet']['channelId']
+        def url
+          "https://www.youtube.com/watch?v=#{@data['id']['videoId']}"
         end
 
-        def title
+        def topic
           @data['snippet']['title']
         end
 
-        def description
-          @data['snippet']['description']
-        end
-
-        def default_thumbnail_url
-          @data['snippet']['thumbnails']['default']['url']
+        def platform
+          'YT'
         end
       end
     end

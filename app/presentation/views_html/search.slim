@@ -6,7 +6,7 @@
   - @search_results.each do |result|
     .row.mb-4
       .col-12
-        a.card(href='/outline/#{result.video_id}'  style="text-decoration: none; color: inherit;")
+        a.card(href='/RoutePlanner/#{result.original_id}'  style="text-decoration: none; color: inherit;")
           .card-body
-            p #{result.title}
-            img.img-thumbnail src=result.default_thumbnail_url
+            p #{result.topic}
+            p #{result.url}

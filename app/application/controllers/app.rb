@@ -4,24 +4,11 @@ require 'rack' # for Rack::MethodOverride
 require 'roda'
 require 'slim'
 require 'slim/include'
-module Outline
+module RoutePlanner
   # Web App
   class App < Roda
-    js_files = [
-      'jquery.min.js',
-      'editormd.min.js',
-      'lib/codemirror/codemirror.min.js',
-      'lib/codemirror/addons.min.js',
-      'lib/codemirror/modes.min.js',
-      'lib/marked.min.js',
-      'lib/prettify.min.js'
-    ]
     css_files = [
-      'style.css',
-      'editormd.css',
-      'lib/codemirror/codemirror.min.css',
-      'lib/codemirror/addon/dialog/dialog.css',
-      'lib/codemirror/addon/search/matchesonscrollbar.css'
+      'style.css'
     ]
     plugin :halt
     plugin :flash
@@ -29,8 +16,7 @@ module Outline
     plugin :render, engine: 'slim', views: 'app/presentation/views_html'
     plugin :public, root: 'app/presentation/public'
     plugin :assets, path: 'app/presentation/assets',
-                    css: css_files,
-                    js: js_files
+                    css: css_files
     plugin :common_logger, $stderr
 
     use Rack::MethodOverride # allows HTTP verbs beyond GET/POST (e.g., DELETE)
@@ -45,17 +31,18 @@ module Outline
       routing.root do
         # Get cookie viewer's previously seen videos
         session[:watching] ||= []
-        result = Service::FetchViewedVideos.new.call(session[:watching])
+        result = Service::FetchViewedRoadmap.new.call(session[:watching])
+        # watchout
         if result.failure?
           flash[:error] = result.failure
-          viewable_videos = []
+          viewable_resource = []
         else
-          videos = result.value!
-          flash.now[:notice] = MSG_GET_STARTED if videos.none?
-          session[:watching] = videos.map(&:video_id)
-          viewable_videos = Views::VideosList.new(videos)
+          resourcelist = result.value!
+          flash.now[:notice] = MSG_GET_STARTED if resourcelist.none?
+          session[:watching] = resourcelist.map(&:original_id)
+          viewable_resource = Views::RoadmapsList.new(resourcelist)
         end
-        view 'home', locals: { videos: viewable_videos }
+        view 'home', locals: { roadmaps: viewable_resource }
       end
       routing.on 'search' do
         routing.is do
@@ -86,35 +73,25 @@ module Outline
           end
         end
       end
-      routing.on 'outline' do
+
+      routing.on 'RoutePlanner' do
         routing.is do
           routing.post do
-            routing.redirect "outline/#{video_id}"
+            routing.redirect "RoutePlanner/#{original_id}"
           end
         end
 
-        routing.on String do |video_id|
-          session[:watching].insert(0, video_id).uniq!
-          # DELETE /outline/{video_id}
+        routing.on String do |original_id|
+          session[:watching].insert(0, original_id).uniq!
+          # DELETE /RoutePlanner/{video_id}
           routing.delete do
-            session[:watching].delete(video_id)
+            session[:watching].delete(original_id)
             routing.redirect '/'
           end
 
-          # GET /outline/video_id
+          # GET /RoutePlanner/video_id
           routing.get do
-            video_made = Service::AddVideo.new.call(video_id)
-            if video_made.failure?
-              flash[:error] = video_made.failure
-              routing.redirect '/'
-            else
-              # Extract timestamps from description data
-              @video = video_made.value![:local_video]
-              timestamp_parser = Views::Timestamp.new(@video.video_description)
-              toc = timestamp_parser.extract_toc
-              view 'outline', locals: { video: @video, toc: toc }
 
-            end
           end
         end
       end

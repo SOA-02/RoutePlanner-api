@@ -23,31 +23,30 @@
     include :flash_bar
   .row
     .col-md-12.blank-row
-    - if videos.any?
-      table.table.table-hover#videos_table
+    - if roadmaps.any?
+      table.table.table-hover#roadmaps_table
         thead
           tr
             th Action
-            th Video Title
-            th Video Published At
-            th Video URL
+            th Topic
+            th URL
+            th Platfrom
         tbody
-          - videos.each do |video|
-            tr.table-row.video_row
-              td#delete_video
-                form role="form" method="post" action=video.praise_link 
+          - roadmaps.each do |roadmap|
+            tr.table-row.roadmap_row
+              td#delete_roadmap
+                form role="form" method="post" action=roadmap.praise_link 
                   input type="hidden" name="_method" value="delete"
-                  button.btn.btn-sm.btn-link type="submit" id="video[#{@index}].delete"
+                  button.btn.btn-sm.btn-link type="submit" id="roadmap[#{@index}].delete"
                     i.fas.fa-trash-alt
 
-              td#td_video_title
-                span.video_table_video_title id="index_str.video_title"
-                  a href=video.praise_link target="_blank"
-                    = video.title
-              td#td_video_published_at
-                span.video_table_video_published_at id="index_str.video_published_at"
-                  = video.published_at
-              td#td_video_url
-                span.video_table_video_url id="index_str.video_url"
-                  a href="https://www.youtube.com/watch?v=#{video.id}" target="_blank"
-                    = video.id
+              td#td_roadmap_title
+                span.roadmap_table_roadmap_title id="index_str.roadmap_topic"
+                  a href=roadmap.praise_link target="_blank"
+                    = roadmap.topic
+              td#td_roadmap_url
+                span.roadmap_table_roadmap_url id="index_str.roadmap_url"
+                  = roadmap.url
+              td#td_roadmap_platform
+                span.roadmap_table_roadmap_platform id="index_str.roadmap_platform"
+                    = roadmap.platform

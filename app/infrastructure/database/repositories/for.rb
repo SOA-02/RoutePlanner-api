@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
-require_relative 'videos'
-require_relative 'channels'
-
-module Outline
+require_relative 'onlines'
+require_relative 'physicals'
+module RoutePlanner
   module Repository
     # Finds the right repository for an entity object or class
     module For
       ENTITY_REPOSITORY = {
-        Entity::Video   => Videos,
-        Entity::Channel => Channels
+        Entity::Online   => Onlines,
+        Entity::Physical => Physicals
       }.freeze
 
       def self.klass(entity_klass)

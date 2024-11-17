@@ -256,7 +256,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     margin-right: -30px;
     padding-bottom: 30px;
     height: 100%;
-    outline: 0;
+    RoutePlanner: 0;
     position: relative;
     -moz-box-sizing: content-box;
     box-sizing: content-box
@@ -384,7 +384,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .CodeMirror-code {
-    outline: 0
+    RoutePlanner: 0
 }
 
 .CodeMirror-measure {
