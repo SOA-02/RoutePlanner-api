@@ -8,6 +8,10 @@ module RoutePlanner
         Database::OnlineOrm.all.map { |db_resource| rebuild_entity(db_resource) }
       end
 
+      def self.find(entity)
+        find_url(entity.url)
+      end
+
       def self.find_all_resource(urls)
         urls.map do |url|
           find_id(url)

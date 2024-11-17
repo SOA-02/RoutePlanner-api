@@ -15,23 +15,25 @@ describe 'Integration Tests of Youtube API and Database' do
     VcrHelper.eject_vcr
   end
 
-
   describe 'Retrieve and store videos' do
     before do
       DatabaseHelper.wipe_database
     end
 
     it 'HAPPY: save yt api to database' do
-      video = RoutePlanner::Youtube::VideoMapper.new(API_KEY).find(VIDEO_ID)
-      _(video).must_be_kind_of RoutePlanner::Entity::Video
+      videos = RoutePlanner::Youtube::VideoRecommandMapper.new(API_KEY).find(KEY_WORD)
+      _(videos).wont_be_empty
+      _(videos).must_be_kind_of Array
+      videos.each do |video|
+        RoutePlanner::Repository::For.entity(video).build_online_resource(video) if video.id.nil?
 
-      rebuilt = RoutePlanner::Repository::For.entity(video).create(video)
+        rebuilt = RoutePlanner::Repository::For.entity(video).find(video)
+        _(rebuilt).wont_be_nil
 
-      _(rebuilt.video_id).must_equal(video.video_id)
-      _(rebuilt.video_title).must_equal(video.video_title)
-      _(rebuilt.video_description).must_equal(video.video_description)
-      _(rebuilt.video_published_at).must_equal(video.video_published_at)
-      _(rebuilt.video_thumbnail_url).must_equal(video.video_thumbnail_url)
+        _(rebuilt.topic).must_equal(video.topic)
+        _(rebuilt.url).must_equal(video.url)
+        _(rebuilt.platform).must_equal(video.platform)
+      end
     end
   end
 end
