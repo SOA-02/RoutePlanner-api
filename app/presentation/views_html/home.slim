@@ -7,11 +7,11 @@
   / Corrected form structure to contain input and button elements
   form role="form" action="/search" method="POST" id="pdf-upload-form"
     .row.d-flex.justify-content-center.align-items-center
-      .col-md-1.col-sm-2.text-light
-        .text-md-end Select file (only PDF):
-      .col-md-8.col-sm-6
-        input.form-control#pdfUpload type="file" name="pdfFile" accept=".pdf" 
-      .col-md-2.col-sm-3
+      .col-md-2 
+        label.text-light for="textareaInput" Add your notes:
+      .col-md-8
+        textarea.form-control#textareaInput name="notes" rows="5" style="overflow:auto; resize:none;"
+      .col-md-2
         button.btn.btn-primary#pdf-upload-submit type="submit" upload
 
 .container
