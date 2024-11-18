@@ -32,7 +32,7 @@ module VcrHelper
   def self.configure_vcr_for_nthusa
     VCR.insert_cassette(
       NTHUSA_CASSETTE,
-      record: :all,
+      record: :new_episodes,
       match_requests_on: %i[method uri headers]
     )
   end

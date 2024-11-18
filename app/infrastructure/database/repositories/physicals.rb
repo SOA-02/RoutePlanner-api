@@ -2,13 +2,13 @@
 
 module RoutePlanner
   module Repository
-    # Repository for Videos
+    # Repository for Courses
     class Physicals
       def self.all
         Database::PhysicalOrm.all.map { |db_resource| rebuild_entity(db_resource) }
       end
 
-      def self.find(entity)
+      def self.physicals_find(entity)
         find_id(entity.course_id)
       end
 
@@ -24,7 +24,7 @@ module RoutePlanner
       end
 
       def self.build_physical_resource(entity)
-        return if find(entity)
+        return if physicals_find(entity)
 
         db_resource = Database::PhysicalOrm.create(entity.to_attr_hash)
         rebuild_entity(db_resource)

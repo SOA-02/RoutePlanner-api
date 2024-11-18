@@ -37,3 +37,37 @@ describe 'Integration Tests of Youtube API and Database' do
     end
   end
 end
+
+describe 'Integration Tests of NTHUSA API and Database' do
+  VcrHelper.setup_vcr
+
+  before do
+    VcrHelper.configure_vcr_for_nthusa
+  end
+
+  after do
+    VcrHelper.eject_vcr
+  end
+
+  describe 'Retrieve and store courses' do
+    before do
+      DatabaseHelper.wipe_database
+    end
+
+    it 'HAPPY: save nthusa api to database' do
+      courses = RoutePlanner::Nthusa::PhysicalRecommendMapper.new.find(PRE_REQ)
+      _(courses).wont_be_empty
+      _(courses).must_be_kind_of Array
+      courses.each do |course|
+        RoutePlanner::Repository::For.entity(course).build_physical_resource(course) if course.id.nil?
+
+        rebuilt = RoutePlanner::Repository::For.entity(course).physicals_find(course)
+        _(rebuilt).wont_be_nil
+
+        _(rebuilt.course_id).must_equal(course.course_id)
+        _(rebuilt.course_name).must_equal(course.course_name)
+        _(rebuilt.credit).must_equal(course.credit)
+      end
+    end
+  end
+end
