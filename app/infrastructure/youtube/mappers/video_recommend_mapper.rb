@@ -2,7 +2,7 @@
 
 module RoutePlanner
   module Youtube
-    class VideoRecommandMapper # rubocop:disable Style/Documentation
+    class VideoRecommendMapper # rubocop:disable Style/Documentation
       def initialize(api_key, gateway_class = YoutubeApi)
         @api_key = api_key
         @gateway_class = gateway_class

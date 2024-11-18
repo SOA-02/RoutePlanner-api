@@ -14,7 +14,7 @@ describe 'Tests Youtube API library' do
 
   describe 'Search information' do
     before do
-      @relevant_result = RoutePlanner::Youtube::VideoRecommandMapper
+      @relevant_result = RoutePlanner::Youtube::VideoRecommendMapper
         .new(API_KEY)
         .find(KEY_WORD)
     end

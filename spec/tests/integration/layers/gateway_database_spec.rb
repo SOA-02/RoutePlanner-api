@@ -21,7 +21,7 @@ describe 'Integration Tests of Youtube API and Database' do
     end
 
     it 'HAPPY: save yt api to database' do
-      videos = RoutePlanner::Youtube::VideoRecommandMapper.new(API_KEY).find(KEY_WORD)
+      videos = RoutePlanner::Youtube::VideoRecommendMapper.new(API_KEY).find(KEY_WORD)
       _(videos).wont_be_empty
       _(videos).must_be_kind_of Array
       videos.each do |video|

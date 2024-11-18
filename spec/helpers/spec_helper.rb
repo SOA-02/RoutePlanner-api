@@ -19,5 +19,6 @@ require_app
 CHANNEL_ID = 'UCpYf6C9QsP_BRf97vLuXlIA'
 VIDEO_ID = 'xiWUL3M9D8c'
 KEY_WORD = 'Ruby'
+PRE_REQ = 'Analytic'
 API_KEY = RoutePlanner::App.config.API_KEY
 CORRECT = YAML.safe_load_file('spec/fixtures/youtube_channel_info.yml')
