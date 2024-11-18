@@ -72,7 +72,7 @@ module RoutePlanner
         end
 
         def platform
-          'YT'
+          'Youtube'
         end
       end
     end
