@@ -14,7 +14,7 @@ module RoutePlanner
 
       def self.find_all_resource(urls)
         urls.map do |url|
-          find_id(url)
+          find_url(url)
         end.compact
       end
 

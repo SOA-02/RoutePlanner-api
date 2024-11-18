@@ -7,7 +7,7 @@ Sequel.migration do
     create_table(:physicals) do
       primary_key :id
       
-      String :course_id, unique: true
+      String :course_id
       String :course_name
       String :credit
       String :language

@@ -8,7 +8,11 @@ module RoutePlanner
         Database::PhysicalOrm.all.map { |db_resource| rebuild_entity(db_resource) }
       end
 
-      def self.find_all_course(course_ids)
+      def self.find(entity)
+        find_id(entity.course_id)
+      end
+
+      def self.find_all_resource(course_ids)
         course_ids.map do |course_id|
           find_id(course_id)
         end.compact
@@ -19,7 +23,7 @@ module RoutePlanner
         rebuild_entity(db_resource)
       end
 
-      def self.create(entity)
+      def self.build_physical_resource(entity)
         return if find(entity)
 
         db_resource = Database::PhysicalOrm.create(entity.to_attr_hash)
