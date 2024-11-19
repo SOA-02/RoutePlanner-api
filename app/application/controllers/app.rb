@@ -42,7 +42,7 @@ module RoutePlanner
           session[:watching] = resourcelist.map(&:original_id)
           viewable_resource = Views::RoadmapsList.new(resourcelist)
         end
-        view 'home_old', locals: { roadmaps: viewable_resource }
+        view 'home', locals: { roadmaps: viewable_resource }
       end
       routing.on 'search' do
         routing.is do
@@ -74,26 +74,36 @@ module RoutePlanner
         end
       end
 
+
+      routing.on 'LevelEvaluation' do
+        routing.is do
+          view 'level_eval'
+        end
+
+      end
+
       routing.on 'RoutePlanner' do
         routing.is do
-          routing.post do
-            routing.redirect "RoutePlanner/#{original_id}"
-          end
+          view 'ability_recs'
+
+          # routing.post do
+          #   routing.redirect "RoutePlanner/#{original_id}"
+          # end
         end
 
-        routing.on String do |original_id|
-          session[:watching].insert(0, original_id).uniq!
-          # DELETE /RoutePlanner/{video_id}
-          routing.delete do
-            session[:watching].delete(original_id)
-            routing.redirect '/'
-          end
+        # routing.on String do |original_id|
+        #   session[:watching].insert(0, original_id).uniq!
+        #   # DELETE /RoutePlanner/{video_id}
+        #   routing.delete do
+        #     session[:watching].delete(original_id)
+        #     routing.redirect '/'
+        #   end
 
-          # GET /RoutePlanner/video_id
-          routing.get do
+        #   # GET /RoutePlanner/video_id
+        #   routing.get do
 
-          end
-        end
+        #   end
+        # end
       end
     end
   end
