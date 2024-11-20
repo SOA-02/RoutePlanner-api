@@ -18,24 +18,24 @@ module RoutePlanner
         course_data = fetch_course_data(pre_req)
         return 'Course  data is missing' unless course_data&.any?
 
-        map_to_entities(course_data)
+        map_to_entities(course_data, pre_req)
       end
 
       private
 
       def fetch_course_data(pre_req)
         @gateway.nthusa_search_recommend(pre_req)
-        
       end
 
-      def map_to_entities(course_items)
-        course_items.map { |item| DataMapper.new(item).build_entity }
+      def map_to_entities(course_items, pre_req)
+        course_items.map { |item| DataMapper.new(item, pre_req).build_entity }
       end
 
       # Extracts entity specific elements from data structure
       class DataMapper
-        def initialize(data)
+        def initialize(data, pre_req)
           @data = data
+          @pre_req = pre_req
           raise 'Snippet data missing' unless @data
         end
 
@@ -47,7 +47,8 @@ module RoutePlanner
             credit:,
             language:,
             provider:,
-            timeloc:
+            timeloc:,
+            for_skill: @pre_req
           )
         end
 
@@ -62,7 +63,7 @@ module RoutePlanner
         end
 
         def credit
-          @data['credit']
+          @data['credit'].to_i
         end
 
         def language

@@ -9,10 +9,12 @@ Sequel.migration do
       
       String :course_id
       String :course_name
-      String :credit
+      Integer :credit
       String :language
       String :provider
       String :timeloc
+      String :for_skill
+
 
       DateTime :created_at
       DateTime :updated_at

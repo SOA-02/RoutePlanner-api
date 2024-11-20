@@ -42,19 +42,24 @@
     .col
       h2 Recommended Online resources
   .row
-    table.table
-      thead
-        tr
-          th Topic
-          th Platform          
-          th URL
-      tbody
-        tr
-          td HTML
-          td
-            p SOA
-          td
-            p 3
+    - if online_resources.any?
+      table.table.table-hover#online_resources_table
+        thead
+          tr
+            th Topic
+            th Platform          
+            th URL
+        tbody
+          - online_resources.each do |online_resource|
+            tr
+              td
+                = online_resource.topic
+              td
+                = online_resource.platform
+              td
+                a href=online_resource.url target="_blank"
+                  | #{online_resource.url}
+
 
   script src="https://cdn.jsdelivr.net/npm/chart.js"
   script

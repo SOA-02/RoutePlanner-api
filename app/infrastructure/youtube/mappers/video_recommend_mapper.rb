@@ -22,7 +22,7 @@ module RoutePlanner
         video_items = filter_video_items(item_data)
         return 'No video items found' if video_items.empty?
 
-        map_to_entities(video_items)
+        map_to_entities(video_items,key_word)
       end
 
       private
@@ -32,8 +32,8 @@ module RoutePlanner
         data['items']
       end
 
-      def map_to_entities(video_items)
-        video_items.map { |item| DataMapper.new(item).build_entity }
+      def map_to_entities(video_items,key_word)
+        video_items.map { |item| DataMapper.new(item,key_word).build_entity }
       end
 
       def filter_video_items(item_data)
@@ -42,8 +42,9 @@ module RoutePlanner
 
       # Extracts entity specific elements from data structure
       class DataMapper
-        def initialize(data)
+        def initialize(data,key_word)
           @data = data
+          @key_word = key_word
           raise 'Snippet data missing' unless @data
         end
 
@@ -53,7 +54,8 @@ module RoutePlanner
             original_id:,
             topic:,
             url:,
-            platform:
+            platform:,
+            for_skill: @key_word
           )
         end
 

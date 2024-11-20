@@ -40,7 +40,8 @@ module RoutePlanner
           credit: db_resource.credit,
           language: db_resource.language,
           provider: db_resource.provider,
-          timeloc: db_resource.timeloc
+          timeloc: db_resource.timeloc,
+          for_skill: db_resource.for_skill
         )
       end
 

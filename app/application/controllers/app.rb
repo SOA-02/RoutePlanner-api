@@ -74,21 +74,27 @@ module RoutePlanner
         end
       end
 
-
       routing.on 'LevelEvaluation' do
         routing.is do
           view 'level_eval'
         end
-
       end
 
       routing.on 'RoutePlanner' do
         routing.is do
-          view 'ability_recs'
+          # temp for test
+          key_word = 'apple'
+          result = Service::AddOnlineResource.new.call(key_word)
 
-          # routing.post do
-          #   routing.redirect "RoutePlanner/#{original_id}"
-          # end
+          if result.failure?
+            flash[:error] = result.failure
+          else
+            online_resources = result.value!
+            online_resources = Views::OnlineResourceList.new(online_resources)
+            view 'ability_recs', locals: { online_resources: online_resources }
+          end
+          # view 'ability_recs', locals: { online_resources: online_resources }
+
         end
 
         # routing.on String do |original_id|
