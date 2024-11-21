@@ -83,7 +83,7 @@ module RoutePlanner
       routing.on 'RoutePlanner' do
         routing.is do
           # temp for test
-          key_word = 'apple'
+          key_word = 'ruby'
           result = Service::AddOnlineResource.new.call(key_word)
 
           if result.failure?
