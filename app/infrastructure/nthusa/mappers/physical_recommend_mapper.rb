@@ -71,11 +71,7 @@ module RoutePlanner
         end
 
         def provider
-          @data['language']
-        end
-
-        def teacher
-          @data['language']
+          @data['teacher']
         end
 
         def timeloc

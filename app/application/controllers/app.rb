@@ -83,33 +83,18 @@ module RoutePlanner
       routing.on 'RoutePlanner' do
         routing.is do
           # temp for test
-          key_word = 'ruby'
-          result = Service::AddOnlineResource.new.call(key_word)
+
+          result = Service::AddResources.new.call(key_word: 'C++', pre_req: 'Analytic')
 
           if result.failure?
             flash[:error] = result.failure
           else
-            online_resources = result.value!
-            online_resources = Views::OnlineResourceList.new(online_resources)
-            view 'ability_recs', locals: { online_resources: online_resources }
+            online_resources = Views::OnlineResourceList.new(result.value![:online_resources])
+            physical_resources = Views::PhyicalResourcesList.new(result.value![:physical_resources])
+            view 'ability_recs', locals: { online_resources: online_resources, physical_resources: physical_resources }
           end
           # view 'ability_recs', locals: { online_resources: online_resources }
-
         end
-
-        # routing.on String do |original_id|
-        #   session[:watching].insert(0, original_id).uniq!
-        #   # DELETE /RoutePlanner/{video_id}
-        #   routing.delete do
-        #     session[:watching].delete(original_id)
-        #     routing.redirect '/'
-        #   end
-
-        #   # GET /RoutePlanner/video_id
-        #   routing.get do
-
-        #   end
-        # end
       end
     end
   end

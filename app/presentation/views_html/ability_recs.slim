@@ -14,29 +14,31 @@
     .col
       h2 Recommended Pyiscal resources
   .row
-    table.table
-      thead
-        tr
-          th course_id            
-          th course_name
-          th credit
-          th language
-          th provider
-          th Timeloc
-      tbody
-        tr
-          td
-            p ID
-          td
-            p SOA
-          td
-            p 3
-          td
-            p EN              
-          td
-            p Soumya Ray     
-          td
-            p In your heart      
+    - if physical_resources.any?
+      table.table.table-hover#online_resources_table
+        thead
+          tr
+            th course_id
+            th course_name          
+            th credit
+            th language
+            th provider          
+            th timeloc 
+        tbody
+          - physical_resources.each do |physical_resource|
+            tr
+              td
+                = physical_resource.course_id
+              td
+                = physical_resource.course_name
+              td
+                =physical_resource.credit
+              td
+                =physical_resource.language
+              td
+                =physical_resource.provider
+              td
+                =physical_resource.timeloc
 
   .row
     .col

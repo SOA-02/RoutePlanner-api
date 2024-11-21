@@ -1,59 +1,49 @@
 # frozen_string_literal: true
 
-require 'dry/transaction'
-require 'logger'
+require 'dry/monads'
 
 module RoutePlanner
   module Service
-    # Transaction to store rec_resource from Youtube API to database
+    # logic of fetching viewed resources
     class AddPhysicalResource
-      MSG_ONLINE_NOT_FOUND = 'Could not find any Online resource'
-      MSG_ONLINEINFO_NOT_FOUND = 'Sorry, could not find that Online resource information.'
-      include Dry::Transaction
+      include Dry::Monads::Result::Mixin
+      MSG_COURSE_NOT_FOUND = 'Could not find any Physical resource'
+      MSG_OURSE_NOT_FOUND = 'Sorry, could not find that Physical resource information.'
+      MSG_SERVER_ERROR = 'An unexpected error occurred on the server. Please try again later.'
+      
 
-      step :find_physical_resource
-      step :store_physical_resource
+      def call(key_word)
+        physical_resources = physical_resource_from_nthusa(key_word)
+        physical_resources.each do |entity|
+          result = physical_resource_find_course_id(entity.course_id)
 
-      private
-
-      # Logger instance for better error tracking
-      LOGGER = Logger.new($stdout)
-      def find_physical_resource(skill) # rubocop:disable Metrics/MethodLength
-        online_resource_info = {}
-        online_resource = online_resource_in_database(skill)
-        if online_resource
-          online_resource_info[:local_physical_resource] = online_resource
-        else
-          online_resource_info[:remote_physical_resource] = online_resource_from_youtube(skill)
+          store_physical_resource(entity) if result.nil?
         end
-        Success(online_resource_info)
-      rescue StandardError => e
-        LOGGER.error("Error in find_physical_resource: #{e.message}")
-        Failure(e.message)
+        Success(physical_resources)
+      rescue StandardError
+        Failure(MSG_SERVER_ERROR)
+        puts 'Could not access database'
       end
 
-      def store_physical_resource(online_resource_info)
-        online_resource_info[:remote_video]&.each do |entity|
-          Repository::For.entity(entity).build_online_resource(entity)
-          puts '已儲存完畢'
-        end
-        Success(online_resource_info)
+      def physical_resource_from_nthusa(input)
+        Nthusa::PhysicalRecommendMapper.new.find(input)
       rescue StandardError => e
-        LOGGER.error("Error in store_physical_resource: Having trouble accessing the database - #{e.message}")
-        Failure(MSG_VIDINFO_NOT_FOUND)
+        LOGGER.error("Error in phyiscal_resource_from_nthusa: Could not find that video on NTHUSA - #{e.message}")
+        Failure(MSG_COURSE_NOT_FOUND)
       end
 
-      # Support methods for fetching video data
-
-      def online_resource_from_youtube(input)
-        Youtube::VideoMapper.new(App.config.API_KEY).find(input)
+      def physical_resource_find_course_id(course_id)
+        Repository::For.klass(Entity::Physical).find_id(course_id)
       rescue StandardError => e
-        LOGGER.error("Error in online_resource_from_youtube: Could not find that video on Youtube - #{e.message}")
-        Failure(MSG_VID_NOT_FOUND)
+        LOGGER.error("Error in physical_resource_from_nthusa: Could not find that video on Youtube - #{e.message}")
+        Failure(MSG_OURSE_NOT_FOUND)
       end
 
-      def online_resource_in_database(input)
-        Repository::For.klass(Entity::Online).find_all_resource_of_skills(input)
+      def store_physical_resource(entity)
+        Repository::For.entity(entity).build_physical_resource(entity)
+      rescue StandardError => e
+        LOGGER.error("Error in physical_resource_from_nthusa: Could not find that video on Youtube - #{e.message}")
+        Failure(MSG_OURSE_NOT_FOUND)
       end
     end
   end
