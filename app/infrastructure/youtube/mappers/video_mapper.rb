@@ -40,7 +40,7 @@ module RoutePlanner
         end
 
         def video_duration
-          @mapper_data['items'][0]['contentDetails']['dimension']
+          @mapper_data['items'][0]['contentDetails']['duration']
         end
       end
     end
