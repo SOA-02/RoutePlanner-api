@@ -33,39 +33,36 @@ describe 'Tests Youtube API library' do
       end
     end
 
-    it 'HAPPY: should get  using try' do
+    it 'HAPPY: maps search data successfully' do
       @relevant_result.each do |item|
-        refute_nil item.topic
-        refute_nil item.url
-        refute_nil item.platform
+        _(item.topic).must_be_kind_of String
+        _(item.url).must_be_kind_of String
+        _(item.platform).must_be_kind_of String
       end
     end
-    # describe 'Video Information' do
-    #   before do
-    #     @video_data = Outline::Youtube::YoutubeApi.new(API_KEY).video_info(VIDEO_ID)
-    #     @items_data = @video_data['items'].first
-    #     @video_mapper = Outline::Youtube::VideoMapper.new(API_KEY).find(VIDEO_ID)
-    #   end
 
-    #   it 'HAPPY: fetches video data successfully' do
-    #     _(@video_data).must_be_kind_of Hash
-    #     _(@video_data['kind']).must_equal 'youtube#videoListResponse'
 
-    #     _(@items_data['kind']).must_equal 'youtube#video'
-    #     _(@items_data['id']).must_equal VIDEO_ID
-    #   end
+    describe 'Video Information' do
+      before do
+        @video_data = RoutePlanner::Youtube::YoutubeApi.new(API_KEY).video_info(VIDEO_ID)
+        @items_data = @video_data['items'].first
+        @video_mapper = RoutePlanner::Youtube::VideoMapper.new(API_KEY).find(VIDEO_ID)
+      end
 
-    #   it 'HAPPY: maps video data successfully' do
-    #     _(@video_mapper).must_be_kind_of Outline::Entity::Video
-    #   end
+      it 'HAPPY: fetches video data successfully' do
+        _(@video_data).must_be_kind_of Hash
+        _(@items_data['id']).must_equal VIDEO_ID
+      end
 
-    #   it 'HAPPY: entity are of correct type' do
-    #     _(@video_mapper.video_id).must_equal VIDEO_ID
-    #     _(@video_mapper.video_title).must_be_kind_of String
-    #     _(@video_mapper.video_description).must_be_kind_of String
-    #     _(@video_mapper.video_published_at).must_be_kind_of String
-    #   end
-    # end
+      it 'HAPPY: maps video data successfully' do
+        _(@video_mapper).must_be_kind_of RoutePlanner::Entity::Youtubevideo
+      end
+
+      it 'HAPPY: entity are of correct type' do
+        _(@video_mapper.video_id).must_equal VIDEO_ID
+        _(@video_mapper.video_duration).must_be_kind_of String
+      end
+    end
 
     # describe 'HAPPY: Parse video description' do
     #   before do

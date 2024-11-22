@@ -85,7 +85,6 @@ module RoutePlanner
           # temp for test
 
           result = Service::AddResources.new.call(key_word: 'C++', pre_req: 'Analytic')
-
           if result.failure?
             flash[:error] = result.failure
           else

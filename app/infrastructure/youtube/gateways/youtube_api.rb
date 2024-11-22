@@ -34,7 +34,8 @@ module RoutePlanner
         end
 
         def yt_video_path(video_id)
-          get(YT_API_ROOT + "/videos?id=#{video_id}&key=#{@api_key}&part=snippet")
+          #/videos?part=contentDetails&id=Ks-_Mh1QhMc&key=[YOUR_API_KEY] HTTP/1.1
+          get(YT_API_ROOT + "/videos?part=contentDetails&id=#{video_id}&key=#{@api_key}&part=snippet")
         end
 
         def get(url)

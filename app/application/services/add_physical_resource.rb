@@ -10,7 +10,6 @@ module RoutePlanner
       MSG_COURSE_NOT_FOUND = 'Could not find any Physical resource'
       MSG_OURSE_NOT_FOUND = 'Sorry, could not find that Physical resource information.'
       MSG_SERVER_ERROR = 'An unexpected error occurred on the server. Please try again later.'
-      
 
       def call(key_word)
         physical_resources = physical_resource_from_nthusa(key_word)
