@@ -42,7 +42,7 @@ module RoutePlanner
           session[:watching] = resourcelist.map(&:original_id)
           viewable_resource = Views::RoadmapsList.new(resourcelist)
         end
-        view 'home_old', locals: { roadmaps: viewable_resource }
+        view 'home', locals: { roadmaps: viewable_resource }
       end
       routing.on 'search' do
         routing.is do
@@ -74,25 +74,25 @@ module RoutePlanner
         end
       end
 
+      routing.on 'LevelEvaluation' do
+        routing.is do
+          view 'level_eval'
+        end
+      end
+
       routing.on 'RoutePlanner' do
         routing.is do
-          routing.post do
-            routing.redirect "RoutePlanner/#{original_id}"
-          end
-        end
+          # temp for test
 
-        routing.on String do |original_id|
-          session[:watching].insert(0, original_id).uniq!
-          # DELETE /RoutePlanner/{video_id}
-          routing.delete do
-            session[:watching].delete(original_id)
-            routing.redirect '/'
+          result = Service::AddResources.new.call(key_word: 'C++', pre_req: 'Analytic')
+          if result.failure?
+            flash[:error] = result.failure
+          else
+            online_resources = Views::OnlineResourceList.new(result.value![:online_resources])
+            physical_resources = Views::PhyicalResourcesList.new(result.value![:physical_resources])
+            view 'ability_recs', locals: { online_resources: online_resources, physical_resources: physical_resources }
           end
-
-          # GET /RoutePlanner/video_id
-          routing.get do
-
-          end
+          # view 'ability_recs', locals: { online_resources: online_resources }
         end
       end
     end

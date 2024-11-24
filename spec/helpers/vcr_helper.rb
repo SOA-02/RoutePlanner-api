@@ -7,6 +7,7 @@ require 'webmock'
 module VcrHelper
   CASSETTES_FOLDER = 'spec/fixtures/cassettes'
   YOUTUBE_CASSETTE = 'youtube_api'
+  NTHUSA_CASSETTE = 'nthusa_api'
 
   def self.setup_vcr
     VCR.configure do |c|
@@ -23,6 +24,14 @@ module VcrHelper
 
     VCR.insert_cassette(
       YOUTUBE_CASSETTE,
+      record: :new_episodes,
+      match_requests_on: %i[method uri headers]
+    )
+  end
+
+  def self.configure_vcr_for_nthusa
+    VCR.insert_cassette(
+      NTHUSA_CASSETTE,
       record: :new_episodes,
       match_requests_on: %i[method uri headers]
     )

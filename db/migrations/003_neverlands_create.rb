@@ -4,14 +4,13 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_table(:onlines) do
+    create_table(:neverlands) do
       primary_key :id
       
-      String :original_id, unique: true
-      String :topic
-      String :url, unique: true
-      String :platform
-      String :for_skill
+      String :course_name
+      String :course_description
+      String :course_evaluation
+      String :AI_use_policy
 
       DateTime :created_at
       DateTime :updated_at
