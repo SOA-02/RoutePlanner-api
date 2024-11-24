@@ -46,7 +46,7 @@ describe 'Tests Youtube API library' do
       before do
         @video_data = RoutePlanner::Youtube::YoutubeApi.new(API_KEY).video_info(VIDEO_ID)
         @video_mapper = RoutePlanner::Youtube::VideoMapper.new(API_KEY).find(VIDEO_ID)
-        binding.irb
+        # binding.irb
       end
 
       it 'HAPPY: fetches video data successfully' do
