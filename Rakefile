@@ -6,54 +6,38 @@ task :default do
   puts `rake -T`
 end
 
-desc 'Run the unit and integration tests'
-task spec: ['spec:default']
-
-namespace :spec do
-  desc 'Run unit and integration tests'
-  Rake::TestTask.new(:default) do |t|
-    t.pattern = 'spec/tests/{integration,unit}/**/*_spec.rb'
-    t.warning = false
-  end
-
-  # NOTE: make sure you have run `rake run:test` in another process
-  desc 'Run acceptance tests'
-  Rake::TestTask.new(:acceptance) do |t|
-    t.pattern = 'spec/tests/acceptance/*_spec.rb'
-    t.warning = false
-  end
-
-  desc 'Run unit, integration, and acceptance tests'
-  Rake::TestTask.new(:all) do |t|
-    t.pattern = 'spec/tests/**/*_spec.rb'
-    t.warning = false
-  end
+desc 'Run unit and integration tests'
+Rake::TestTask.new(:spec) do |t|
+  t.pattern = 'spec/tests/**/*_spec.rb'
+  t.warning = false
 end
+
 
 desc 'Keep rerunning unit/integration tests upon changes'
 task :respec do
   sh "rerun -c 'rake spec' --ignore 'coverage/*' --ignore 'repostore/*'"
 end
 
-desc 'Run web app in default mode'
-task run: ['run:default']
-
-namespace :run do
-  desc 'Run web app in development or production'
-  task :default do
-    sh 'bundle exec puma'
-  end
-
-  desc 'Run web app for acceptance tests'
-  task :test do
-    sh 'RACK_ENV=test puma -p 9000'
-  end
-end
-
-desc 'Keep rerunning web app upon changes'
+desc 'Run the webserver and application and restart if code changes'
 task :rerun do
   sh "rerun -c --ignore 'coverage/*' --ignore 'repostore/*' -- bundle exec puma"
 end
+
+desc 'Run web app in default (dev) mode'
+task run: ['run:default']
+
+namespace :run do
+  desc 'Run API in dev mode'
+  task :default do
+    sh 'rerun -c "bundle exec puma -p 9090"'
+  end
+
+  desc 'Run API in test mode'
+  task :test do
+    sh 'RACK_ENV=test bundle exec puma -p 9090'
+  end
+end
+
 
 desc 'Generates a 64-byte secret for Rack::Session'
 task :new_session_secret do
@@ -99,6 +83,37 @@ namespace :db do
 
     FileUtils.rm(RoutePlanner::App.config.DB_FILENAME)
     puts "Deleted #{RoutePlanner::App.config.DB_FILENAME}"
+  end
+end
+
+namespace :repos do
+  task :config do # rubocop:disable Rake/Desc
+    require_relative 'config/environment' # load config info
+    def app = CodePraise::App # rubocop:disable Rake/MethodDefinitionInTask
+    @repo_dirs = Dir.glob("#{app.config.REPOSTORE_PATH}/*/")
+  end
+
+  desc 'Create directory for repo store'
+  task :create => :config do
+    puts `mkdir #{app.config.REPOSTORE_PATH}`
+  end
+
+  desc 'Delete cloned repos in repo store'
+  task :wipe => :config do
+    puts 'No git repositories found in repostore' if @repo_dirs.empty?
+
+    sh "rm -rf #{app.config.REPOSTORE_PATH}/*/" do |ok, _|
+      puts(ok ? "#{@repo_dirs.count} repos deleted" : 'Could not delete repos')
+    end
+  end
+
+  desc 'List cloned repos in repo store'
+  task :list => :config do
+    if @repo_dirs.empty?
+      puts 'No git repositories found in repostore'
+    else
+      puts @repo_dirs.join("\n")
+    end
   end
 end
 
